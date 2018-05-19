@@ -14,4 +14,4 @@
 
 typedef int(*ProcCallBack)(char, float, float, float);
 
-MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibrary(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
+extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibrary(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
