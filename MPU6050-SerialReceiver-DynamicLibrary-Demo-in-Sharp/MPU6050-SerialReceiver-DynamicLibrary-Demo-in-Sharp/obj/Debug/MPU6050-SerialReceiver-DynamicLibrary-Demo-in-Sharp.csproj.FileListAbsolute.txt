@@ -1,0 +1,1 @@
+D:\GitHub\SC-Win32Developments\MPU6050-SerialReceiver-DynamicLibrary-Demo-in-Sharp\MPU6050-SerialReceiver-DynamicLibrary-Demo-in-Sharp\bin\Debug\MPU6050-SerialReceiver-DynamicLibrary-Demo-in-Sharp.exe.config
