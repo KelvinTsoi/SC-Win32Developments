@@ -12,6 +12,16 @@
 
 #include "SensorManager.h"
 
+#define USE_FOR_C_PLUS_PLUS 0
+
 typedef int(*ProcCallBack)(char, float, float, float);
 
-extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibrary(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
+#if USE_FOR_C_PLUS_PLUS
+MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
+MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryKillProcess(void);
+#else
+extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
+extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryKillProcess(void);
+#endif
+
+

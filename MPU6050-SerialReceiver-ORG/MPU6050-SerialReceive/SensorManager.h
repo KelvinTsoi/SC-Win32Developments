@@ -21,6 +21,8 @@ public:
 
 	int Process(const char *COMx, const int BaudRate, ProcCallBack func);	
 
+	int KillProcess();
+
 	void ReceiverThreadProcCallBack();
 
 	void PusherThreadProcCallBack();
@@ -37,7 +39,11 @@ private:
 
 private:
 
-	bool isRunning;
+	bool isReceiverRunning;
+
+	bool isPusherRunning;
+
+	bool isInitialized;
 
 	DWORD threadIDh;
 

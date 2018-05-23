@@ -5,13 +5,23 @@
 
 #include <Windows.h>
 
-#define TARGET_PATH		"MPU6050-SerialReceiver-DynamicLibrary.dll"
+#define COMx	"COM4"
 
-#define TARGET_LPPROCNAME	"?fnMPU6050SerialReceiverDynamicLibrary@@YAHPBDHP6AHDMMM@Z@Z"
+#define TARGET_PATH			"MPU6050-SerialReceiver-DynamicLibrary.dll"
+
+#define TARGET_PROCESS		"?fnMPU6050SerialReceiverDynamicLibraryProcess@@YAHPBDHP6AHDMMM@Z@Z"
+
+#define TARGET_KILLPROCESS	"?fnMPU6050SerialReceiverDynamicLibraryKillProcess@@YAHXZ"
 
 typedef int(*ProcCallBack)(char, float, float, float);
 
-typedef int(*TYPE_fnDllDemo) (const char *, int, ProcCallBack);
+typedef int(*TYPE_fnDllProcess) (const char *, int, ProcCallBack);
+
+typedef int(*TYPE_fnDllKillProcess) (void);
+
+TYPE_fnDllProcess fnDllProcess;
+
+TYPE_fnDllKillProcess fnDllKillProcess;
 
 int ProcessCallBackFunc(char direction, float pitch, float roll, float yaw)
 {
@@ -32,30 +42,68 @@ int ProcessCallBackFunc(char direction, float pitch, float roll, float yaw)
 	return 0;
 }
 
+bool ConsoleHandler(DWORD fdwctrltype)
+{
+	int ret = 0;
+
+	switch (fdwctrltype)
+	{
+	case CTRL_C_EVENT:
+	{
+		if ((ret = fnDllKillProcess()) != 0)
+		{
+			printf("Kill Process Error, Error Code: %d\r\n", ret);
+			exit(1);
+		}
+		break;
+	}
+	case CTRL_BREAK_EVENT:
+	{
+		if ((ret = fnDllProcess(COMx, 115200, ProcessCallBackFunc)) != 0)
+		{
+			printf("Start Process Error, Error Code: %d\r\n", ret);
+			exit(1);
+		}
+		break;
+	}
+	default:
+		return false;
+	}
+
+	return true;
+}
+
+
 int main()
 {
 	HMODULE hModule = LoadLibrary(TARGET_PATH);
-
 	if (hModule == NULL || hModule == INVALID_HANDLE_VALUE)
 	{
 		printf("Load Library Failed\r\n");
 		exit(1);
 	}
 
-	TYPE_fnDllDemo fnDllDemo = (TYPE_fnDllDemo)GetProcAddress(hModule, TARGET_LPPROCNAME);
-	
-	if (!fnDllDemo)
+	fnDllProcess = (TYPE_fnDllProcess)GetProcAddress(hModule, TARGET_PROCESS);
+
+	fnDllKillProcess = (TYPE_fnDllKillProcess)GetProcAddress(hModule, TARGET_KILLPROCESS);
+
+	if (!fnDllProcess || !fnDllKillProcess)
 	{
 		printf("Load Function Failed\r\n");
 		exit(2);
 	}
 
-	// Start all process.
-	fnDllDemo("COM4", 115200, ProcessCallBackFunc);
-	
-	// Keep alive.
-	while (1);
+	int ret = 0;
+	if ((ret = fnDllProcess(COMx, 115200, ProcessCallBackFunc)) != 0)
+	{
+		printf("Start Process Error, Error Code: %d\r\n", ret);
+		exit(1);
+	}
+
+	if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, true))
+	{
+		while (1);
+	}
 
 	exit(0);
 }
-

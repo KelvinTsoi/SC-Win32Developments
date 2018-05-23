@@ -47,7 +47,7 @@ int SensorSerial::Start(const char * COMx, const int BaudRate)
 	if (!GetCommState(hCom, &dcb))
 	{
 		DWORD dwError = GetLastError();
-		printf("Getting serial port Failed\r\n", dwError);
+		printf("Getting serial port Failed, Error code %d\r\n", dwError);
 		return 3;
 	}
 
@@ -59,14 +59,14 @@ int SensorSerial::Start(const char * COMx, const int BaudRate)
 	if (!SetCommState(hCom, &dcb))
 	{
 		DWORD dwError = GetLastError();
-		printf("Setting up serial port Failed\r\n", dwError);
+		printf("Setting up serial port Failed, Error code %d\r\n", dwError);
 		return 4;
 	}
 
 	if (!PurgeComm(hCom, PURGE_RXCLEAR))
 	{
 		DWORD dwError = GetLastError();
-		printf("Clean up serial port buffer Failed\r\n", dwError);
+		printf("Clean up serial port buffer Failed, Error code %d\r\n", dwError);
 		return 5;
 	}
 
@@ -80,16 +80,21 @@ int SensorSerial::Stop(void)
 	if (!PurgeComm(hCom, PURGE_RXCLEAR))
 	{
 		DWORD dwError = GetLastError();
-		printf("Clean up serial port buffer Failed\r\n", dwError);
+		printf("Clean up serial port buffer Failed, Error code %d\r\n", dwError);
 		return 1;
 	}
 
 	if (!CloseHandle(hCom))
 	{
 		DWORD dwError = GetLastError();
-		printf("Close serial handle Failed\r\n", dwError);
-		return 1;
+		printf("Close serial handle Failed, Error code %d\r\n", dwError);
+		return 2;
 	}
+
+	hCom = NULL;
+
+	memset(&dcb, 0, sizeof(dcb));
+
 	return 0;
 }
 

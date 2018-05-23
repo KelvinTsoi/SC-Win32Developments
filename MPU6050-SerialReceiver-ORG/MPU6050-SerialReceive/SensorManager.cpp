@@ -24,8 +24,8 @@ void SensorManager::ReceiverThreadProcCallBack()
 	int RecvLength = 0;
 	bool HaveNewMsg = false;
 	char Direction = 0x00;
-
-	while (1)
+	isReceiverRunning = true;
+	while (isReceiverRunning)
 	{
 		SensorSerial::Instance()->Read(&TmpData, 1);
 
@@ -75,12 +75,14 @@ void SensorManager::ReceiverThreadProcCallBack()
 			}
 		}
 	}
+	return;
 }
 
 void SensorManager::PusherThreadProcCallBack()
 {
 	SensorData *res;
-	while (1)
+	isPusherRunning = true;
+	while (isPusherRunning)
 	{
 		res = NULL;
 		if ((res = SensorQueue::Instance()->Dequeue()) != NULL)
@@ -88,6 +90,7 @@ void SensorManager::PusherThreadProcCallBack()
 			(*pcbFunc)(res->direction, res->pitch, res->roll, res->yaw);
 		}
 	}
+	return;
 }
 
 SensorManager* SensorManager::Instance()
@@ -101,34 +104,44 @@ SensorManager* SensorManager::Instance()
 
 SensorManager::SensorManager()
 {
-	isRunning = false;
+	isPusherRunning = false;
+	isReceiverRunning = false;
+	isInitialized = false;
 }
 
 int SensorManager::Process(const char *COMx, const int BaudRate, ProcCallBack pcb)
 {
 	int ret = 0;
 
+	if (isInitialized)
+	{
+		printf("Sensor Manager has been initialized!\r\n");
+		return 1;
+	}
+
 	if ((ret = SensorSerial::Instance()->Start(COMx, BaudRate)) != 0)
 	{
 		printf("Sensor Serial Start Failed, Error code: %d\r\n", ret);
-		return 1;
+		return 2;
 	}
 
 	if (!(hThread = CreateThread(NULL, 0, ReceiverThreadProc, this, 0, &threadIDh)))
 	{
 		DWORD dwError = GetLastError();
 		printf("Create Receiver Thread Failed, Error code %d\r\n", dwError);
-		return 2;
+		return 3;
 	}
 
 	if (!(kThread = CreateThread(NULL, 0, PusherThreadProc, this, 0, &threadIDk)))
 	{
 		DWORD dwError = GetLastError();
 		printf("Create Pusher Thread Failed, Error code %d\r\n", dwError);
-		return 3;
+		return 4;
 	}
 
 	pcbFunc = pcb;
+
+	isInitialized = true;
 
 	return 0;
 }
@@ -137,5 +150,34 @@ int SensorManager::Decode(float *pitch, float *roll, float *yaw, const char * bu
 {
 	int ret = 0; 
 	sscanf(buffer, "[%f][%f][%f]", pitch, roll, yaw);
+	return 0;
+}
+
+int SensorManager::KillProcess()
+{
+	if (!isInitialized)
+	{
+		printf("Sensor Manager has not been initialized!\r\n");
+		return 1;
+	}
+
+	isPusherRunning = false;
+	isReceiverRunning = false;
+
+	while (!SensorQueue::Instance()->IsEmpty())
+	{
+		SensorQueue::Instance()->Dequeue();
+	}
+
+	int ret = 0;
+
+	if ((ret = SensorSerial::Instance()->Stop()) != 0)
+	{
+		printf("Sensor Serial Stop Failed, Error code: %d\r\n", ret);
+		return 2;
+	}
+
+	isInitialized = false;
+
 	return 0;
 }

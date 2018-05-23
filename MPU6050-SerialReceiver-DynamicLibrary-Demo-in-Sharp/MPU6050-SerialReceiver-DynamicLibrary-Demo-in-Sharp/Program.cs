@@ -13,9 +13,18 @@ namespace MPU6050_SerialReceiver_DynamicLibrary_Demo_in_Sharp
 
         public delegate int ProcCallBack(char direction, float pitch, float roll, float yaw);
 
-        [DllImport("MPU6050-SerialReceiver-DynamicLibrary.dll", EntryPoint = "fnMPU6050SerialReceiverDynamicLibrary", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        [DllImport("MPU6050-SerialReceiver-DynamicLibrary.dll", EntryPoint = "fnMPU6050SerialReceiverDynamicLibraryProcess", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
 
-        public static extern int fnMPU6050SerialReceiverDynamicLibrary(string COMx, Int32 BaudRate, ProcCallBack ProcessCalslBackFunc);
+        public static extern int fnMPU6050SerialReceiverDynamicLibraryProcess(string COMx, Int32 BaudRate, ProcCallBack ProcessCalslBackFunc);
+
+        [DllImport("MPU6050-SerialReceiver-DynamicLibrary.dll", EntryPoint = "fnMPU6050SerialReceiverDynamicLibraryKillProcess", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+
+        public static extern int fnMPU6050SerialReceiverDynamicLibraryKillProcess();
+
+        delegate bool ConsoleCtrlDelegate(int dwCtrlType);
+
+        [DllImport("kernel32.dll")]
+        private static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate HandlerRoutine, bool Add);
 
         static int ProcessCallBackFuncInstance(char direction, float pitch, float roll, float yaw)
         {
@@ -38,9 +47,50 @@ namespace MPU6050_SerialReceiver_DynamicLibrary_Demo_in_Sharp
 
         static void Main(string[] args)
         {
-            Int32 ret = fnMPU6050SerialReceiverDynamicLibrary("COM4", 115200, new ProcCallBack(ProcessCallBackFuncInstance));
+            Int32 ret = 0;
 
-            while (true);
+            if((ret=fnMPU6050SerialReceiverDynamicLibraryProcess("COM4", 115200, new ProcCallBack(ProcessCallBackFuncInstance)))!=0)
+            {
+                Console.WriteLine("Start Process Error, Error Code:{0}", ret);
+                return;
+            }
+
+            ConsoleCtrlDelegate newDelegate = new ConsoleCtrlDelegate(HandlerRoutine);
+
+            if (SetConsoleCtrlHandler(newDelegate, true))
+            {
+                while (true) ;
+            }
+            return;
+        }
+
+        const int CTRL_C_EVENT = 0;
+
+        const int CTRL_BREAK_EVENT = 1;
+
+        static bool HandlerRoutine(int CtrlType)
+        {
+            Int32 ret = 0;
+            switch (CtrlType)
+            {
+                case CTRL_C_EVENT:
+                    if ((ret = fnMPU6050SerialReceiverDynamicLibraryKillProcess()) != 0)
+                    {
+                        Console.WriteLine("Start Process Error, Error Code:{0}", ret);
+                        return false;
+                    }
+                    break;
+                case CTRL_BREAK_EVENT:
+                    if ((ret = fnMPU6050SerialReceiverDynamicLibraryProcess("COM4", 115200, new ProcCallBack(ProcessCallBackFuncInstance))) != 0)
+                    {
+                        Console.WriteLine("Stop Process Error, Error Code:{0}", ret);
+                        return false;
+                    }
+                    break;
+                default:
+                    return true;
+            }
+            return true;
         }
     }
 }
