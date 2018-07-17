@@ -35,7 +35,7 @@ void SensorQueue::Enqueue(const SensorData x)
 	{
 		if (count <= 0)
 		{
-			printf("Empty Queue Dequeue\r\n");
+			;
 		}
 		else
 		{

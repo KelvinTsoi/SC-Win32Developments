@@ -1,0 +1,33 @@
+Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file C:\Users\CaiYuJian\Desktop\SC-Win32Developments\MPU6050-SerialReceiver-DynamicLibrary\Debug\MPU6050-SerialReceiver-DynamicLibrary.dll
+
+File Type: DLL
+
+  Section contains the following exports for MPU6050-SerialReceiver-DynamicLibrary.dll
+
+    00000000 characteristics
+    5B4D8EB8 time date stamp Tue Jul 17 14:37:44 2018
+        0.00 version
+           1 ordinal base
+           2 number of functions
+           2 number of names
+
+    ordinal hint RVA      name
+
+          1    0 00014442 fnMPU6050SerialReceiverDynamicLibraryKillProcess = @ILT+1085(_fnMPU6050SerialReceiverDynamicLibraryKillProcess)
+          2    1 0001455A fnMPU6050SerialReceiverDynamicLibraryProcess = @ILT+1365(_fnMPU6050SerialReceiverDynamicLibraryProcess)
+
+  Summary
+
+        1000 .00cfg
+        1000 .data
+        1000 .gfids
+        2000 .idata
+        7000 .rdata
+        2000 .reloc
+        1000 .rsrc
+       2B000 .text
+       13000 .textbss

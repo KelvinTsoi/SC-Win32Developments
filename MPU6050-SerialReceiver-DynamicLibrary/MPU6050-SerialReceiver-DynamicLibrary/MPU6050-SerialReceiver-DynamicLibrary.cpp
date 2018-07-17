@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "MPU6050-SerialReceiver-DynamicLibrary.h"
 
-MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc)
+MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const int COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc)
 {
 	int ret = 0;
 

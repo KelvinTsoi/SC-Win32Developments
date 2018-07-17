@@ -12,15 +12,16 @@
 
 #include "SensorManager.h"
 
+// if you need this dll for C++ Application, then Set this value 1, else Set this value 0
 #define USE_FOR_C_PLUS_PLUS 0
 
 typedef int(*ProcCallBack)(char, float, float, float);
 
 #if USE_FOR_C_PLUS_PLUS
-MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
+MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const int COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
 MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryKillProcess(void);
 #else
-extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const char *COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
+extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryProcess(const int COMx, const int BaudRate, ProcCallBack ProcessCallBackFunc);
 extern "C" MPU6050SERIALRECEIVERDYNAMICLIBRARY_API int fnMPU6050SerialReceiverDynamicLibraryKillProcess(void);
 #endif
 

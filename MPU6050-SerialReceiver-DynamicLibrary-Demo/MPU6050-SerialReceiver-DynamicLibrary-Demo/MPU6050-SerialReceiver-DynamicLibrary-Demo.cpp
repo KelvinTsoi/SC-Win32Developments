@@ -5,17 +5,19 @@
 
 #include <Windows.h>
 
-#define COMx	"COM4"
+#define COMx	21
+
+#define BAUDRATE	2000000
 
 #define TARGET_PATH			"MPU6050-SerialReceiver-DynamicLibrary.dll"
 
-#define TARGET_PROCESS		"?fnMPU6050SerialReceiverDynamicLibraryProcess@@YAHPBDHP6AHDMMM@Z@Z"
+#define TARGET_PROCESS		"?fnMPU6050SerialReceiverDynamicLibraryProcess@@YAHHHP6AHDMMM@Z@Z"
 
 #define TARGET_KILLPROCESS	"?fnMPU6050SerialReceiverDynamicLibraryKillProcess@@YAHXZ"
 
 typedef int(*ProcCallBack)(char, float, float, float);
 
-typedef int(*TYPE_fnDllProcess) (const char *, int, ProcCallBack);
+typedef int(*TYPE_fnDllProcess) (int, int, ProcCallBack);
 
 typedef int(*TYPE_fnDllKillProcess) (void);
 
@@ -59,7 +61,7 @@ bool ConsoleHandler(DWORD fdwctrltype)
 	}
 	case CTRL_BREAK_EVENT:
 	{
-		if ((ret = fnDllProcess(COMx, 115200, ProcessCallBackFunc)) != 0)
+		if ((ret = fnDllProcess(COMx, BAUDRATE, ProcessCallBackFunc)) != 0)
 		{
 			printf("Start Process Error, Error Code: %d\r\n", ret);
 			exit(1);
@@ -94,7 +96,7 @@ int main()
 	}
 
 	int ret = 0;
-	if ((ret = fnDllProcess(COMx, 115200, ProcessCallBackFunc)) != 0)
+	if ((ret = fnDllProcess(COMx, BAUDRATE, ProcessCallBackFunc)) != 0)
 	{
 		printf("Start Process Error, Error Code: %d\r\n", ret);
 		exit(1);

@@ -39,6 +39,12 @@
     <ClInclude Include="SensorSerial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CSerialPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,6 +63,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SensorSerial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CSerialPort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

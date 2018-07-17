@@ -2,31 +2,32 @@ Microsoft (R) COFF/PE Dumper Version 14.00.24215.1
 Copyright (C) Microsoft Corporation.  All rights reserved.
 
 
-Dump of file MPU6050-SerialReceiver-DynamicLibrary.dll
+Dump of file C:\Users\CaiYuJian\Desktop\SC-Win32Developments\MPU6050-SerialReceiver-DynamicLibrary\Debug\MPU6050-SerialReceiver-DynamicLibrary.dll
 
 File Type: DLL
 
   Section contains the following exports for MPU6050-SerialReceiver-DynamicLibrary.dll
 
     00000000 characteristics
-    5AFBC828 time date stamp Wed May 16 13:56:56 2018
+    5B4D8DDF time date stamp Tue Jul 17 14:34:07 2018
         0.00 version
            1 ordinal base
-           1 number of functions
-           1 number of names
+           2 number of functions
+           2 number of names
 
     ordinal hint RVA      name
 
-          1    0 00011352 ?fnMPU6050SerialReceiverDynamicLibrary@@YAHPBDHP6AHDMMM@Z@Z = @ILT+845(?fnMPU6050SerialReceiverDynamicLibrary@@YAHPBDHP6AHDMMM@Z@Z)
+          1    0 000146F9 ?fnMPU6050SerialReceiverDynamicLibraryKillProcess@@YAHXZ = @ILT+1780(?fnMPU6050SerialReceiverDynamicLibraryKillProcess@@YAHXZ)
+          2    1 00014BB8 ?fnMPU6050SerialReceiverDynamicLibraryProcess@@YAHHHP6AHDMMM@Z@Z = @ILT+2995(?fnMPU6050SerialReceiverDynamicLibraryProcess@@YAHHHP6AHDMMM@Z@Z)
 
   Summary
 
         1000 .00cfg
         1000 .data
         1000 .gfids
-        1000 .idata
-        3000 .rdata
-        1000 .reloc
+        2000 .idata
+        7000 .rdata
+        2000 .reloc
         1000 .rsrc
-        8000 .text
-       10000 .textbss
+       2B000 .text
+       13000 .textbss

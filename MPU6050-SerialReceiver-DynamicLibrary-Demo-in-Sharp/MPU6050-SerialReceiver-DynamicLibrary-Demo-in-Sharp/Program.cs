@@ -15,7 +15,7 @@ namespace MPU6050_SerialReceiver_DynamicLibrary_Demo_in_Sharp
 
         [DllImport("MPU6050-SerialReceiver-DynamicLibrary.dll", EntryPoint = "fnMPU6050SerialReceiverDynamicLibraryProcess", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
 
-        public static extern int fnMPU6050SerialReceiverDynamicLibraryProcess(string COMx, Int32 BaudRate, ProcCallBack ProcessCalslBackFunc);
+        public static extern int fnMPU6050SerialReceiverDynamicLibraryProcess(Int32 COMx, Int32 BaudRate, ProcCallBack ProcessCalslBackFunc);
 
         [DllImport("MPU6050-SerialReceiver-DynamicLibrary.dll", EntryPoint = "fnMPU6050SerialReceiverDynamicLibraryKillProcess", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
 
@@ -49,7 +49,7 @@ namespace MPU6050_SerialReceiver_DynamicLibrary_Demo_in_Sharp
         {
             Int32 ret = 0;
 
-            if((ret=fnMPU6050SerialReceiverDynamicLibraryProcess("COM4", 115200, new ProcCallBack(ProcessCallBackFuncInstance)))!=0)
+            if((ret=fnMPU6050SerialReceiverDynamicLibraryProcess(21, 2000000, new ProcCallBack(ProcessCallBackFuncInstance)))!=0)
             {
                 Console.WriteLine("Start Process Error, Error Code:{0}", ret);
                 return;
@@ -81,7 +81,7 @@ namespace MPU6050_SerialReceiver_DynamicLibrary_Demo_in_Sharp
                     }
                     break;
                 case CTRL_BREAK_EVENT:
-                    if ((ret = fnMPU6050SerialReceiverDynamicLibraryProcess("COM4", 115200, new ProcCallBack(ProcessCallBackFuncInstance))) != 0)
+                    if ((ret = fnMPU6050SerialReceiverDynamicLibraryProcess(21, 2000000, new ProcCallBack(ProcessCallBackFuncInstance))) != 0)
                     {
                         Console.WriteLine("Stop Process Error, Error Code:{0}", ret);
                         return false;

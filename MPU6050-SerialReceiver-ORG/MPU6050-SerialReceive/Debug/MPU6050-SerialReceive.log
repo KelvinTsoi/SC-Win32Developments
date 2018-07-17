@@ -1,1 +1,10 @@
-﻿
+﻿  stdafx.cpp
+  CSerialPort.cpp
+  SerialQueue.cpp
+  SensorSerial.cpp
+  SensorQueue.cpp
+  SensorManager.cpp
+  MPU6050-SerialReceiver.cpp
+  Generating Code...
+  MPU6050-SerialReceive.vcxproj -> C:\Users\CaiYuJian\Desktop\SC-Win32Developments\MPU6050-SerialReceiver-ORG\Debug\MPU6050-SerialReceiver.exe
+  MPU6050-SerialReceive.vcxproj -> C:\Users\CaiYuJian\Desktop\SC-Win32Developments\MPU6050-SerialReceiver-ORG\Debug\MPU6050-SerialReceiver.pdb (Full PDB)
