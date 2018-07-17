@@ -74,12 +74,10 @@ int main()
 		exit(1);
 	}
 
-#if 0
 	if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, true))
 	{
 		while (1);
 	}
-#endif
 
 	while (1);
 

@@ -194,6 +194,7 @@ SensorManager::SensorManager()
 	isPusherRunning = false;
 	isReceiverRunning = false;
 	isInitialized = false;
+	FirstTimeInit = true;
 }
 
 void SensorManager::OnSendMessage(unsigned char* str, int port, int str_len)
@@ -236,12 +237,20 @@ int SensorManager::Process(const int port, const int BaudRate, ProcCallBack pcb)
 
 	HWND m_handle = HWND_BROADCAST;
 
-	ret = m_SerialPort.InitPort(m_handle, port, BaudRate, 'n', 8, 1, EV_RXCHAR, 82);
-
-	m_SerialPort.StartMonitoring();
+	//if (FirstTimeInit)
+	{
+		ret = m_SerialPort.InitPort(m_handle, port, BaudRate, 'n', 8, 1, EV_RXCHAR, 82);
+		m_SerialPort.StartMonitoring();
 
 #ifdef _SEND_DATA_WITH_SIGSLOT
-	m_SerialPort.sendMessageSignal.connect(this, &SensorManager::OnSendMessage);
+		m_SerialPort.sendMessageSignal.connect(this, &SensorManager::OnSendMessage);
+#endif
+	}
+#if 0
+	else
+	{
+		m_SerialPort.ResumeMonitoring();
+	}
 #endif
 
 	if (!(hThread = CreateThread(NULL, 0, ReceiverThreadProc, this, 0, &threadIDh)))
@@ -261,6 +270,8 @@ int SensorManager::Process(const int port, const int BaudRate, ProcCallBack pcb)
 	pcbFunc = pcb;
 
 	isInitialized = true;
+
+	FirstTimeInit = false;
 
 	return 0;
 }
@@ -288,13 +299,23 @@ int SensorManager::KillProcess()
 		SensorQueue::Instance()->Dequeue();
 	}
 
+	while (!SerialQueue::Instance()->IsEmpty())
+	{
+		SerialQueue::Instance()->Dequeue();
+	}
+
 	int ret = 0;
 
+	m_SerialPort.ClosePort();
+
+#if 0
 	if ((ret = SensorSerial::Instance()->Stop()) != 0)
 	{
 		printf("Sensor Serial Stop Failed, Error code: %d\r\n", ret);
 		return 2;
 	}
+#endif
+
 
 	isInitialized = false;
 

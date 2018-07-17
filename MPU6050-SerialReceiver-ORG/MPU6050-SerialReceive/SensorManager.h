@@ -43,6 +43,8 @@ private:
 
 private:
 
+	bool FirstTimeInit;
+
 	bool isReceiverRunning;
 
 	bool isPusherRunning;
