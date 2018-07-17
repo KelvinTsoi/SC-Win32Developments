@@ -2,7 +2,9 @@
 
 #include "MPU6050-SerialReceiver.h"
 
-#define COMx	"COM4"
+#define COMx	21
+
+#define BAUDRATE 2000000
 
 int ProcessCallBackFunc(char direction, float pitch, float roll, float yaw)
 {
@@ -22,7 +24,7 @@ int ProcessCallBackFunc(char direction, float pitch, float roll, float yaw)
 void InstanceProcess()
 {
 	int ret = 0;
-	if ((ret = SensorManager::Instance()->Process(COMx, 115200, ProcessCallBackFunc)) != 0)
+	if ((ret = SensorManager::Instance()->Process(COMx, BAUDRATE, ProcessCallBackFunc)) != 0)
 	{
 		printf("Start Process Error, Error Code: %d\r\n", ret);
 		exit(1);
@@ -66,16 +68,20 @@ int main()
 {
 	int ret = 0;
 
-	if ((ret = SensorManager::Instance()->Process(COMx, 115200, ProcessCallBackFunc)) != 0)
+	if ((ret = SensorManager::Instance()->Process(COMx, BAUDRATE, ProcessCallBackFunc)) != 0)
 	{
 		printf("Start Process Error, Error Code: %d\r\n", ret);
 		exit(1);
 	}
 
+#if 0
 	if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, true))
 	{
 		while (1);
 	}
+#endif
+
+	while (1);
 
 	return 0;
 }

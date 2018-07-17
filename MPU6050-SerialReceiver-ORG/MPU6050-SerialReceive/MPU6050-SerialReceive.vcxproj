@@ -72,6 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\GitHub\SC-Win32Developments\MPU6050-SerialReceiver-ORG\MPU6050-SerialReceive;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -146,19 +147,26 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CSerialPort.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="MPU6050-SerialReceiver.h" />
     <ClInclude Include="SensorManager.h" />
     <ClInclude Include="SensorQueue.h" />
     <ClInclude Include="SensorSerial.h" />
+    <ClInclude Include="SerialQueue.h" />
+    <ClInclude Include="sigslot.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CSerialPort.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="MPU6050-SerialReceiver.cpp" />
     <ClCompile Include="SensorManager.cpp" />
     <ClCompile Include="SensorQueue.cpp" />
     <ClCompile Include="SensorSerial.cpp" />
+    <ClCompile Include="SerialQueue.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

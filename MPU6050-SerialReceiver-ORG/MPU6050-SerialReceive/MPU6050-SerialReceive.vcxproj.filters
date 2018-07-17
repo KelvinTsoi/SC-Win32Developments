@@ -39,6 +39,15 @@
     <ClInclude Include="MPU6050-SerialReceiver.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="sigslot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CSerialPort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialQueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -54,6 +63,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MPU6050-SerialReceiver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CSerialPort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialQueue.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

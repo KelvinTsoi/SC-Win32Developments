@@ -2,7 +2,9 @@
 #pragma warning(disable:4996)
 
 #include "SensorSerial.h"
+#include "CSerialPort.h"
 #include "SensorQueue.h"
+#include "SerialQueue.h"
 
 #define LEFT				0x01
 #define RIGHT				0x02
@@ -15,11 +17,11 @@
 
 typedef int(*ProcCallBack)(char, float, float, float);
 
-class SensorManager
+class SensorManager : public has_slots<>
 {
 public:
 
-	int Process(const char *COMx, const int BaudRate, ProcCallBack func);	
+	int Process(const int port, const int BaudRate, ProcCallBack func);	
 
 	int KillProcess();
 
@@ -28,6 +30,8 @@ public:
 	void PusherThreadProcCallBack();
 
 	static SensorManager* Instance();
+
+	void OnSendMessage(unsigned char* str, int port, int str_len);
 
 protected:
 
@@ -52,6 +56,8 @@ private:
 	DWORD threadIDk;
 
 	HANDLE kThread;
+
+	CSerialPort m_SerialPort;
 
 	ProcCallBack pcbFunc;
 
